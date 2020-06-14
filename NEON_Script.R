@@ -19,3 +19,5 @@ aggregate(mosquito$fishTotalLength,by=list(mosquito$before_after),FUN=length)
 
 tapply(mosquito$fishTotalLength, mosquito$before_after, sd)
 tapply(mosquito$fishTotalLength, mosquito$before_after, var)
+#Checking
+print("fish")
