@@ -21,7 +21,6 @@ aggregate(mosquito$fishTotalLength,by=list(mosquito$before_after),FUN=mean)
 aggregate(mosquito$fishTotalLength,by=list(mosquito$before_after),FUN=sd)
 aggregate(mosquito$fishTotalLength,by=list(mosquito$before_after),FUN=length)
 
-
 tapply(mosquito$fishTotalLength, mosquito$before_after, sd)
 tapply(mosquito$fishTotalLength, mosquito$before_after, var)
 #Checking
@@ -29,3 +28,16 @@ print("fish")
 #Next species
 Xiphophorus<-subset(fish,fish$SPECIES=="Xiphophorus_hellerii")
 summary(Xiphophorus)
+#analysis of length
+hist(Xiphophorus$fishTotalLength[Xiphophorus$before_after=="before"],breaks=16,col="red",xlab="Fish total lenght(mm)",ylab="Number of fish",main="Fish lenght distribution (before)")
+hist(Xiphophorus$fishTotalLength[Xiphophorus$before_after=="after"],breaks=20,col="red",xlab="Fish total lenght(mm)",ylab="Number of fish",main="Fish lenght distribution (after)")
+tapply(Xiphophorus$fishTotalLength, Xiphophorus$before_after, var)
+#Welsh t-test for lenght (sample sizes are not equal, although vars differ less than 3 fold)
+t.test(Xiphophorus$fishTotalLength~Xiphophorus$before_after, data=Xiphophorus, var.equal=F)
+#analysis of weight
+hist(Xiphophorus$fishWeight[Xiphophorus$before_after=="before"],breaks=10,col="red",xlab="Fish weight (g)",ylab="Number of fish",main="Fish weight distribution (before)")
+hist(Xiphophorus$fishWeight[Xiphophorus$before_after=="after"],breaks=10,col="red",xlab="Fish weight (g)",ylab="Number of fish",main="Fish weight distribution (after)")
+#Log transforming the weight data
+logweight<-log10(Xiphophorus$fishWeight)
+hist(logweight[Xiphophorus$before_after=="before"],breaks=10,col="red",xlab="log fish weight (g)",ylab="Number of fish",main="Log fish weight distribution (before)")
+hist(logweight[Xiphophorus$before_after=="after"],breaks=10,col="red",xlab="log fish weight (g)",ylab="Number of fish",main="Log fish weight distribution (after)")
