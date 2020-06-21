@@ -33,14 +33,30 @@ hist(Xiphophorus$fishTotalLength[Xiphophorus$before_after=="before"],breaks=16,c
 hist(Xiphophorus$fishTotalLength[Xiphophorus$before_after=="after"],breaks=20,col="red",xlab="Fish total lenght(mm)",ylab="Number of fish",main="Fish lenght distribution (after)")
 tapply(Xiphophorus$fishTotalLength, Xiphophorus$before_after, var)
 tapply(Xiphophorus$fishTotalLength, Xiphophorus$before_after, sd)
-#Welsh t-test for lenght (sample sizes are not equal, although vars differ less than 3 fold)
+#Welsh t-test for length (sample sizes are not equal, although vars differ less than 3 fold)
 t.test(Xiphophorus$fishTotalLength~Xiphophorus$before_after, data=Xiphophorus, var.equal=F)
 t.test(Xiphophorus$fishTotalLength~Xiphophorus$before_after, data=Xiphophorus, var.equal=T)
 #analysis of weight
 hist(Xiphophorus$fishWeight[Xiphophorus$before_after=="before"],breaks=10,col="red",xlab="Fish weight (g)",ylab="Number of fish",main="Fish weight distribution (before)")
 hist(Xiphophorus$fishWeight[Xiphophorus$before_after=="after"],breaks=10,col="red",xlab="Fish weight (g)",ylab="Number of fish",main="Fish weight distribution (after)")
 #Log transforming the weight data
-logweight<-log10(Xiphophorus$fishWeight)
+logweight<-log(Xiphophorus$fishWeight)
 hist(logweight[Xiphophorus$before_after=="before"],breaks=10,col="red",xlab="log fish weight (g)",ylab="Number of fish",main="Log fish weight distribution (before)")
 hist(logweight[Xiphophorus$before_after=="after"],breaks=10,col="red",xlab="log fish weight (g)",ylab="Number of fish",main="Log fish weight distribution (after)")
 
+
+
+
+
+#next species
+Poecilia<-subset(fish,fish$SPECIES=="Poecilia_reticulata")
+summary(Poecilia)
+library(lattice)
+histogram(~fishTotalLength | before_after*SITE, data=Poecilia, main="Fish length distribution",xlab="Fish length(mm)")
+attach(Poecilia)
+table(SITE, before_after)
+aggregate(Poecilia$fishTotalLength, by=list(before_after,SITE), FUN=mean)
+aggregate(Poecilia$fishTotalLength, by=list(before_after,SITE), FUN=sd)
+fit <- aov(Poecilia$fishTotalLength ~ before_after*SITE)
+summary(fit)
+interaction.plot(SITE, before_after, Poecilia$fishTotalLength, type="b", col=c("red","blue"), pch=c(16, 18), main="Interaction between hurricane and site")
