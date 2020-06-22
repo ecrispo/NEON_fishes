@@ -51,6 +51,7 @@ hist(logweight[Xiphophorus$before_after=="after"],breaks=10,col="red",xlab="log 
 #next species
 Poecilia<-subset(fish,fish$SPECIES=="Poecilia_reticulata")
 summary(Poecilia)
+#Poecilia length analysis
 library(lattice)
 histogram(~fishTotalLength | before_after*SITE, data=Poecilia, main="Fish length distribution",xlab="Fish length(mm)")
 attach(Poecilia)
@@ -59,4 +60,12 @@ aggregate(Poecilia$fishTotalLength, by=list(before_after,SITE), FUN=mean)
 aggregate(Poecilia$fishTotalLength, by=list(before_after,SITE), FUN=sd)
 fit <- aov(Poecilia$fishTotalLength ~ before_after*SITE)
 summary(fit)
-interaction.plot(SITE, before_after, Poecilia$fishTotalLength, type="b", col=c("red","blue"), pch=c(16, 18), main="Interaction between hurricane and site")
+interaction.plot(SITE, before_after, Poecilia$fishTotalLength, type="b", col=c("red","blue"), pch=c(16, 18), main="Interaction between hurricane and site", ylab="Poecilia fish mean lenght")
+#Poecilia weight analysis
+library(lattice)
+histogram(~fishWeight | before_after*SITE, data=Poecilia, main="Fish weight distribution", xlab="Fish weight (g)")
+aggregate(Poecilia$fishWeight, by=list(before_after,SITE), FUN=mean)
+aggregate(Poecilia$fishWeight, by=list(before_after,SITE), FUN=sd)
+fit2 <- aov(Poecilia$fishWeight ~ before_after*SITE)
+summary(fit2)
+interaction.plot(SITE, before_after, Poecilia$fishWeight, type="b", col=c("red","blue"), pch=c(16, 18), main="Interaction between hurricane and site", ylab= "Poecilia fish mean weight")
