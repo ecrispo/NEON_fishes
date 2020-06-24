@@ -43,11 +43,9 @@ hist(Xiphophorus$fishWeight[Xiphophorus$before_after=="after"],breaks=10,col="re
 logweight<-log(Xiphophorus$fishWeight)
 hist(logweight[Xiphophorus$before_after=="before"],breaks=10,col="red",xlab="log fish weight (g)",ylab="Number of fish",main="Log fish weight distribution (before)")
 hist(logweight[Xiphophorus$before_after=="after"],breaks=10,col="red",xlab="log fish weight (g)",ylab="Number of fish",main="Log fish weight distribution (after)")
-
-
-
-
-
+#Data still not normal
+#Rank sum test
+wilcox.test(Xiphophorus$fishWeight~Xiphophorus$before_after)
 #next species
 Poecilia<-subset(fish,fish$SPECIES=="Poecilia_reticulata")
 summary(Poecilia)
