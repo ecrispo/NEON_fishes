@@ -50,14 +50,16 @@ hist(logweight[Xiphophorus$before_after=="after"],breaks=10,col="red",xlab="log 
 #Data still not normal
 #Rank sum test
 wilcox.test(Xiphophorus$fishWeight~Xiphophorus$before_after)
+tapply(Xiphophorus$fishTotalLength, Xiphophorus$before_after, mean)
 #next species
 Poecilia<-subset(fish,fish$SPECIES=="Poecilia_reticulata")
 summary(Poecilia)
 #Poecilia length analysis
+#The attach function code was removed
+#Must include Peocilia$ before each variable name in all code below
 library(lattice)
 histogram(~fishTotalLength | before_after*SITE, data=Poecilia, main="Fish length distribution",xlab="Fish length(mm)")
-attach(Poecilia)
-table(SITE, before_after)
+table(Poecilia$SITE, Poecilia$before_after)
 aggregate(Poecilia$fishTotalLength, by=list(before_after,SITE), FUN=mean)
 aggregate(Poecilia$fishTotalLength, by=list(before_after,SITE), FUN=sd)
 fit <- aov(Poecilia$fishTotalLength ~ before_after*SITE)
