@@ -51,6 +51,7 @@ hist(logweight[Xiphophorus$before_after=="after"],breaks=10,col="red",xlab="log 
 #Rank sum test
 wilcox.test(Xiphophorus$fishWeight~Xiphophorus$before_after)
 tapply(Xiphophorus$fishTotalLength, Xiphophorus$before_after, mean)
+tapply(Xiphophorus$fishWeight, Xiphophorus$before_after, mean)
 #next species
 Poecilia<-subset(fish,fish$SPECIES=="Poecilia_reticulata")
 summary(Poecilia)
@@ -74,4 +75,18 @@ fit2 <- aov(Poecilia$fishWeight ~ before_after*SITE)
 summary(fit2)
 interaction.plot(SITE, before_after, Poecilia$fishWeight, type="b", col=c("red","blue"), pch=c(16, 18), main="Interaction between hurricane and site", ylab= "Poecilia fish mean weight")
 
-
+#Next species
+#Agonostomus length analysis
+Agonostomus<- subset(fish, fish$SPECIES=="Agonostomus_monticola")
+summary(Agonostomus)
+hist(Agonostomus$fishTotalLength[Agonostomus$before_after=="before"],breaks=16,col="red",xlab="Fish total lenght(mm)",ylab="Number of fish",main="Fish lenght distribution (before)")
+hist(Agonostomus$fishTotalLength[Agonostomus$before_after=="after"],breaks=16,col="red",xlab="Fish total lenght(mm)",ylab="Number of fish",main="Fish lenght distribution (after)")
+tapply(Agonostomus$fishTotalLength, Agonostomus$before_after, mean)     
+tapply(Agonostomus$fishTotalLength, Agonostomus$before_after, sd)     
+t.test(Agonostomus$fishTotalLength~Agonostomus$before_after, data=Agonostomus, var.equal=F)
+#Agonostomus weight analysis
+hist(Agonostomus$fishWeight[Agonostomus$before_after=="before"],breaks=16,col="red",xlab="Fish weight(g)",ylab="Number of fish",main="Fish weight distribution (before)")
+hist(Agonostomus$fishWeight[Agonostomus$before_after=="after"],breaks=16,col="red",xlab="Fish total lenght(mm)",ylab="Number of fish",main="Fish lenght distribution (after)")
+tapply(Agonostomus$fishWeight, Agonostomus$before_after, mean)
+tapply(Agonostomus$fishWeight, Agonostomus$before_after, sd)
+t.test(Agonostomus$fishWeight~Agonostomus$before_after, data=Agonostomus, var.equal=F)
