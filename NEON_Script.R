@@ -79,14 +79,26 @@ interaction.plot(SITE, before_after, Poecilia$fishWeight, type="b", col=c("red",
 #Agonostomus length analysis
 Agonostomus<- subset(fish, fish$SPECIES=="Agonostomus_monticola")
 summary(Agonostomus)
-hist(Agonostomus$fishTotalLength[Agonostomus$before_after=="before"],breaks=16,col="red",xlab="Fish total lenght(mm)",ylab="Number of fish",main="Fish lenght distribution (before)")
-hist(Agonostomus$fishTotalLength[Agonostomus$before_after=="after"],breaks=16,col="red",xlab="Fish total lenght(mm)",ylab="Number of fish",main="Fish lenght distribution (after)")
+hist(Agonostomus$fishTotalLength[Agonostomus$before_after=="before"],breaks=16,col="red",xlab="Fish total length(mm)",ylab="Number of fish",main="Fish lenght distribution (before)")
+hist(Agonostomus$fishTotalLength[Agonostomus$before_after=="after"],breaks=16,col="red",xlab="Fish total length(mm)",ylab="Number of fish",main="Fish lenght distribution (after)")
 tapply(Agonostomus$fishTotalLength, Agonostomus$before_after, mean)     
-tapply(Agonostomus$fishTotalLength, Agonostomus$before_after, sd)     
+tapply(Agonostomus$fishTotalLength, Agonostomus$before_after, sd) 
+tapply(Agonostomus$fishTotalLength, Agonostomus$before_after, length) 
 t.test(Agonostomus$fishTotalLength~Agonostomus$before_after, data=Agonostomus, var.equal=F)
 #Agonostomus weight analysis
 hist(Agonostomus$fishWeight[Agonostomus$before_after=="before"],breaks=16,col="red",xlab="Fish weight(g)",ylab="Number of fish",main="Fish weight distribution (before)")
-hist(Agonostomus$fishWeight[Agonostomus$before_after=="after"],breaks=16,col="red",xlab="Fish total lenght(mm)",ylab="Number of fish",main="Fish lenght distribution (after)")
+hist(Agonostomus$fishWeight[Agonostomus$before_after=="after"],breaks=16,col="red",xlab="Fish weight (g)",ylab="Number of fish",main="Fish lenght distribution (after)")
 tapply(Agonostomus$fishWeight, Agonostomus$before_after, mean)
 tapply(Agonostomus$fishWeight, Agonostomus$before_after, sd)
+tapply(Agonostomus$fishWeight, Agonostomus$before_after, length)
 t.test(Agonostomus$fishWeight~Agonostomus$before_after, data=Agonostomus, var.equal=F)
+
+
+gobies<-subset(fish,fish$SPECIES=="Sicydium_punctatum"|fish$SPECIES=="Sicydium_spp")
+
+gobies
+length(gobies$fishTotalLength)
+summary(fish)
+
+spottedGoby<-subset(fish,fish$SPECIES=="Sicydium_punctatum")
+length(spottedGoby$fishWeight)
