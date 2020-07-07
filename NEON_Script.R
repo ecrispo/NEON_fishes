@@ -23,6 +23,15 @@ aggregate(mosquito$fishTotalLength,by=list(mosquito$before_after),FUN=length)
 
 tapply(mosquito$fishTotalLength, mosquito$before_after, sd)
 tapply(mosquito$fishTotalLength, mosquito$before_after, var)
+#Final Graph
+install.packages("ggplot2")
+library(ggplot2)
+ggplot(mosquito, aes(x=before_after, y=fishTotalLength)) +
+  geom_boxplot(fill="cornflowerblue",
+               color="black", notch=TRUE)+ geom_point(position="jitter", color="blue", alpha=.5)+ geom_rug(side="l", color="black")
+
+ ggplot(mosquito, aes(before_after, y=fishTotalLength)) +
+  geom_violin(fill="lightblue") + geom_boxplot(fill="lightgreen", width=.2)
 #Checking
 print("fish")
 #Next species
