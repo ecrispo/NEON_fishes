@@ -26,12 +26,27 @@ tapply(mosquito$fishTotalLength, mosquito$before_after, var)
 #Final Graph
 install.packages("ggplot2")
 library(ggplot2)
+
+mosquito$before_after<-factor(mosquito$before_after,levels=c("before","after"))
 ggplot(mosquito, aes(x=before_after, y=fishTotalLength)) +
   geom_boxplot(fill="cornflowerblue",
                color="black", notch=TRUE)+ geom_point(position="jitter", color="blue", alpha=.5)+ geom_rug(side="l", color="black")
 
- ggplot(mosquito, aes(before_after, y=fishTotalLength)) +
+ggplot(mosquito, aes(x=before_after, y=fishTotalLength)) +
+  geom_boxplot(fill="cornflowerblue",
+               color="black", notch=TRUE)+ geom_point(position="jitter", color="blue")
+
+ggplot(mosquito, aes(x=before_after, y=fishTotalLength)) +
+  geom_boxplot(fill="white",
+               color="black", notch=TRUE)+ geom_point(position="jitter")
+
+ggplot(mosquito, aes(before_after, y=fishTotalLength)) +
   geom_violin(fill="lightblue") + geom_boxplot(fill="lightgreen", width=.2)
+
+ggplot(mosquito, aes(before_after, y=fishTotalLength)) +
+   geom_violin(fill="lightblue") + geom_boxplot(fill="lightgreen", width=.2)+
+   labs(x="Timing of data collection",y="Total Fish Length (mm)")
+ 
 #Checking
 print("fish")
 #Next species
