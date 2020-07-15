@@ -155,7 +155,7 @@ ggplot(Agonostomus, aes(before_after, y=fishWeight)) +
   geom_violin(fill="white") + geom_boxplot(fill="white", width=.2)+
   labs(x="Timing of data collection reletive to hurricanes",y="Total Fish Length (mm)")
 
-
+#Should exclude UNKNOWN goby species
 gobies<-subset(fish,fish$SPECIES=="Sicydium_punctatum"|fish$SPECIES=="Sicydium_spp")
 
 gobies
@@ -167,6 +167,7 @@ tapply(gobies$fishTotalLength, gobies$before_after, mean)
 tapply(gobies$fishTotalLength, gobies$before_after, sd)
 tapply(gobies$fishTotalLength, gobies$before_after, length)
 t.test(gobies$fishTotalLength~gobies$before_after, data=gobies, var.equal=F)
+wilcox.test(gobies$fishTotalLength~gobies$before_after)
 #weight 
 hist(gobies$fishWeight[gobies$before_after=="before"],breaks=16,col="red",xlab="Fish weight (g)",ylab="Number of fish",main="Fish weight distribution (before)")
 hist(gobies$fishWeight[gobies$before_after=="after"],breaks=16,col="red",xlab="Fish weight (g)",ylab="Number of fish",main="Fish weight distribution (before)")
@@ -185,7 +186,7 @@ ggplot(gobies, aes(before_after, y=fishWeight)) +
   geom_violin(fill="white") + geom_boxplot(fill="white", width=.2)+
   labs(x="Timing of data collection reletive to hurricanes",y="Total Fish Length (mm)")
 
-
+#Focus on the spotted algae eating goby ONLY
 spottedGoby<-subset(fish,fish$SPECIES=="Sicydium_punctatum")
 length(spottedGoby$fishWeight)
 hist(spottedGoby$fishTotalLength[spottedGoby$before_after=="before"],breaks=16,col="red",xlab="Fish length (mm)",ylab="Number of fish",main="Fish length distribution (before)")
@@ -193,6 +194,9 @@ hist(spottedGoby$fishTotalLength[spottedGoby$before_after=="after"],breaks=16,co
 tapply(spottedGoby$fishTotalLength, spottedGoby$before_after, mean)
 tapply(spottedGoby$fishTotalLength, spottedGoby$before_after, sd)
 tapply(spottedGoby$fishTotalLength, spottedGoby$before_after, length)
+wilcox.test(spottedGoby$fishTotalLength~spottedGoby$before_after)
+#Since the data are bimodal, especially in the AFTER group, cannot use t-test
+#Use Mann-Whitney Wilcoxon U test instead
 t.test(spottedGoby$fishTotalLength~spottedGoby$before_after, data=spottedGoby, var.equal=F)
 #weight 
 hist(spottedGoby$fishWeight[spottedGoby$before_after=="before"],breaks=16,col="red",xlab="Fish weight (g)",ylab="Number of fish",main="Fish weight distribution (before)")
@@ -204,15 +208,18 @@ tapply(logweightgobies2, spottedGoby$before_after, mean)
 tapply(logweightgobies2, spottedGoby$before_after, sd)
 t.test(logweightgobies2~spottedGoby$before_after, data=spottedGoby, var.equal=F)
 
-#Enviromental factors
+#Environmental factors
 Env<-read.csv(file.choose(),header=T)
-na.rm=T 
+sd(Env$waterTemp,na.rm=T) #EXAMPLE
+sd(Env$waterTemp) #EXAMPLE
 
-parse_datetime(nakamura$AddedDate, "%m/%d/%y %I:%M %p")
+parse_datetime(Env$DATE, "%m/%d/%y %I:%M %p") #Doesn't work now
 
 EnvCUPE<-subset(Env, Env$SITE=="CUPE") 
 class(EnvCUPE$DATE)
 EnvCUPE$DATE<-as.Date(EnvCUPE$DATE)
+head(EnvCUPE$DATE)
+class(EnvCUPE$DATE)
 
 qplot(x=DATE,y=waterTemp, 
       data=EnvCUPE,
