@@ -44,8 +44,8 @@ ggplot(mosquito, aes(before_after, y=fishTotalLength)) +
   geom_violin(fill="lightblue") + geom_boxplot(fill="lightgreen", width=.2)
 
 ggplot(mosquito, aes(before_after, y=fishTotalLength)) +
-   geom_violin(fill="lightblue") + geom_boxplot(fill="lightgreen", width=.2)+
-   labs(x="Timing of data collection",y="Total Fish Length (mm)")
+   geom_violin(fill="white") + geom_boxplot(fill="white", width=.2)+
+   labs(x="Timing of data collection reletive to hurricanes",y="Total Fish Length (mm)")
  
 #Checking
 print("fish")
@@ -76,6 +76,19 @@ hist(logweight[Xiphophorus$before_after=="after"],breaks=10,col="red",xlab="log 
 wilcox.test(Xiphophorus$fishWeight~Xiphophorus$before_after)
 tapply(Xiphophorus$fishTotalLength, Xiphophorus$before_after, mean)
 tapply(Xiphophorus$fishWeight, Xiphophorus$before_after, mean)
+#final graph
+Xiphophorus$before_after<-factor(Xiphophorus$before_after,levels=c("before","after"))
+
+ggplot(Xiphophorus, aes(x=before_after, y=fishTotalLength)) +
+  geom_boxplot(fill="white",
+               color="black", notch=TRUE)+ geom_point(position="jitter")
+ggplot(Xiphophorus, aes(before_after, y=fishTotalLength)) +
+  geom_violin(fill="white") + geom_boxplot(fill="white", width=.2)+
+  labs(x="Timing of data collection reletive to hurricanes",y="Total Fish Length (mm)")
+ggplot(Xiphophorus, aes(before_after, y=fishWeight)) +
+  geom_violin(fill="white") + geom_boxplot(fill="white", width=.2)+
+  labs(x="Timing of data collection reletive to hurricanes",y="Total Fish Length (mm)")
+
 #next species
 Poecilia<-subset(fish,fish$SPECIES=="Poecilia_reticulata")
 summary(Poecilia)
@@ -99,6 +112,23 @@ fit2 <- aov(Poecilia$fishWeight ~ before_after*SITE)
 summary(fit2)
 interaction.plot(SITE, before_after, Poecilia$fishWeight, type="b", col=c("red","blue"), pch=c(16, 18), main="Interaction between hurricane and site", ylab= "Poecilia fish mean weight")
 
+PoeciliaCUPE<-subset(Poecilia,Poecilia$SITE=="CUPE")
+PoeciliaGUIL<-subset(Poecilia,Poecilia$SITE=="GUIL")
+summary(PoeciliaCUPE)
+summary(PoeciliaGUIL)
+length(PoeciliaCUPE)
+length(PoeciliaGUIL)
+
+Poecilia$before_after<-factor(Poecilia$before_after,levels=c("before","after"))
+ggplot(PoeciliaCUPE, aes(before_after, y=fishTotalLength)) +
+  geom_violin(fill="white") + geom_boxplot(fill="white", width=.2)+
+  labs(x="Timing of data collection reletive to hurricanes",y="Total Fish Length (mm)")
+
+ggplot(PoeciliaGUIL, aes(before_after, y=fishTotalLength)) +
+  geom_violin(fill="white") + geom_boxplot(fill="white", width=.2)+
+  labs(x="Timing of data collection reletive to hurricanes",y="Total Fish Length (mm)")
+
+
 #Next species
 #Agonostomus length analysis
 Agonostomus<- subset(fish, fish$SPECIES=="Agonostomus_monticola")
@@ -116,6 +146,14 @@ tapply(Agonostomus$fishWeight, Agonostomus$before_after, mean)
 tapply(Agonostomus$fishWeight, Agonostomus$before_after, sd)
 tapply(Agonostomus$fishWeight, Agonostomus$before_after, length)
 t.test(Agonostomus$fishWeight~Agonostomus$before_after, data=Agonostomus, var.equal=F)
+#FINAL GRAPH
+Agonostomus$before_after<-factor(Agonostomus$before_after,levels=c("before","after"))
+ggplot(Agonostomus, aes(before_after, y=fishTotalLength)) +
+  geom_violin(fill="white") + geom_boxplot(fill="white", width=.2)+
+  labs(x="Timing of data collection reletive to hurricanes",y="Total Fish Length (mm)")
+ggplot(Agonostomus, aes(before_after, y=fishWeight)) +
+  geom_violin(fill="white") + geom_boxplot(fill="white", width=.2)+
+  labs(x="Timing of data collection reletive to hurricanes",y="Total Fish Length (mm)")
 
 
 gobies<-subset(fish,fish$SPECIES=="Sicydium_punctatum"|fish$SPECIES=="Sicydium_spp")
@@ -138,6 +176,15 @@ hist(logweightgobies[gobies$before_after=="after"],breaks=10,col="red",xlab="log
 tapply(logweightgobies, gobies$before_after, mean)
 tapply(logweightgobies, gobies$before_after, sd)
 t.test(logweightgobies~gobies$before_after, data=gobies, var.equal=F)
+#final graph
+gobies$before_after<-factor(gobies$before_after,levels=c("before","after"))
+ggplot(gobies, aes(before_after, y=fishTotalLength)) +
+  geom_violin(fill="white") + geom_boxplot(fill="white", width=.2)+
+  labs(x="Timing of data collection reletive to hurricanes",y="Total Fish Length (mm)")
+ggplot(gobies, aes(before_after, y=fishWeight)) +
+  geom_violin(fill="white") + geom_boxplot(fill="white", width=.2)+
+  labs(x="Timing of data collection reletive to hurricanes",y="Total Fish Length (mm)")
+
 
 spottedGoby<-subset(fish,fish$SPECIES=="Sicydium_punctatum")
 length(spottedGoby$fishWeight)
@@ -156,3 +203,17 @@ hist(logweightgobies2[spottedGoby$before_after=="after"],breaks=10,col="red",xla
 tapply(logweightgobies2, spottedGoby$before_after, mean)
 tapply(logweightgobies2, spottedGoby$before_after, sd)
 t.test(logweightgobies2~spottedGoby$before_after, data=spottedGoby, var.equal=F)
+
+#Enviromental factors
+Env<-read.csv(file.choose(),header=T)
+na.rm=T 
+
+parse_datetime(nakamura$AddedDate, "%m/%d/%y %I:%M %p")
+
+EnvCUPE<-subset(Env, Env$SITE=="CUPE") 
+class(EnvCUPE$DATE)
+EnvCUPE$DATE<-as.Date(EnvCUPE$DATE)
+
+qplot(x=DATE,y=waterTemp, 
+      data=EnvCUPE,
+      main="water temp Cupe")  
