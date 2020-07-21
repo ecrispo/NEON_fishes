@@ -177,14 +177,6 @@ hist(logweightgobies[gobies$before_after=="after"],breaks=10,col="red",xlab="log
 tapply(logweightgobies, gobies$before_after, mean)
 tapply(logweightgobies, gobies$before_after, sd)
 t.test(logweightgobies~gobies$before_after, data=gobies, var.equal=F)
-#final graph
-gobies$before_after<-factor(gobies$before_after,levels=c("before","after"))
-ggplot(gobies, aes(before_after, y=fishTotalLength)) +
-  geom_violin(fill="white") + geom_boxplot(fill="white", width=.2)+
-  labs(x="Timing of data collection reletive to hurricanes",y="Total Fish Length (mm)")
-ggplot(gobies, aes(before_after, y=fishWeight)) +
-  geom_violin(fill="white") + geom_boxplot(fill="white", width=.2)+
-  labs(x="Timing of data collection reletive to hurricanes",y="Total Fish Length (mm)")
 
 #Focus on the spotted algae eating goby ONLY
 spottedGoby<-subset(fish,fish$SPECIES=="Sicydium_punctatum")
@@ -208,6 +200,15 @@ tapply(logweightgobies2, spottedGoby$before_after, mean)
 tapply(logweightgobies2, spottedGoby$before_after, sd)
 t.test(logweightgobies2~spottedGoby$before_after, data=spottedGoby, var.equal=F)
 
+#final graph
+spottedGoby$before_after<-factor(spottedGoby$before_after,levels=c("before","after"))
+ggplot(spottedGoby, aes(before_after, y=fishTotalLength)) +
+  geom_violin(fill="white") + geom_boxplot(fill="white", width=.2)+
+  labs(x="Timing of data collection reletive to hurricanes",y="Total Fish Length (mm)")
+ggplot(spottedGoby, aes(before_after, y=fishWeight)) +
+  geom_violin(fill="white") + geom_boxplot(fill="white", width=.2)+
+  labs(x="Timing of data collection reletive to hurricanes",y="Total Fish Length (mm)")
+
 #Environmental factors
 Env<-read.csv(file.choose(),header=T)
 sd(Env$waterTemp,na.rm=T) #EXAMPLE
@@ -224,3 +225,17 @@ class(EnvCUPE$DATE)
 qplot(x=DATE,y=waterTemp, 
       data=EnvCUPE,
       main="water temp Cupe")  
+qplot(x=DATE,y=pH, data=EnvCUPE,main="water pH")
+qplot(x=DATE,y=dissolvedOxygen,data=EnvCUPE,main="dissolved Oxygen")
+qplot(x=DATE,y=dissolvedOxygenSaturation,data=EnvCUPE,main="dissloved Oxygen saturation")
+
+EnvGUIL<-subset(Env, Env$SITE=="GUIL")
+EnvGUIL$DATE<-as.Date(EnvGUIL$DATE)
+qplot(x=DATE,y=waterTemp, 
+      data=EnvGUIL,
+      main="water temp Cupe")  
+qplot(x=DATE,y=pH, data=EnvGUIL,main="water pH")
+qplot(x=DATE,y=dissolvedOxygen,data=EnvGUIL,main="dissolved Oxygen")
+qplot(x=DATE,y=dissolvedOxygenSaturation,data=EnvGUIL,main="dissloved Oxygen saturation")
+
+
