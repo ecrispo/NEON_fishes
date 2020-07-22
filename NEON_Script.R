@@ -222,6 +222,8 @@ EnvCUPE$DATE<-as.Date(EnvCUPE$DATE)
 head(EnvCUPE$DATE)
 class(EnvCUPE$DATE)
 
+library(ggplot2)
+
 qplot(x=DATE,y=waterTemp, 
       data=EnvCUPE,
       main="water temp Cupe")  
@@ -238,4 +240,13 @@ qplot(x=DATE,y=pH, data=EnvGUIL,main="water pH")
 qplot(x=DATE,y=dissolvedOxygen,data=EnvGUIL,main="dissolved Oxygen")
 qplot(x=DATE,y=dissolvedOxygenSaturation,data=EnvGUIL,main="dissloved Oxygen saturation")
 
-
+EnvCUPE$pH
+qplot(x=DATE[pH>5],y=pH[pH>5], data=EnvCUPE,main="water pH")
+plot(pH[pH>5]~DATE[pH>5],data=EnvCUPE)
+EnvCUPE.pH<-subset(Env, Env$SITE=="CUPE" & Env$pH>5) 
+EnvCUPE.pH$pH
+EnvCUPE$pH
+length(EnvCUPE$pH)
+length(EnvCUPE.pH$pH)
+sort(EnvCUPE$pH)
+sort(EnvCUPE.pH$pH)
