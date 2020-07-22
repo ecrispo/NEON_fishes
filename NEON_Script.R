@@ -199,7 +199,7 @@ hist(logweightgobies2[spottedGoby$before_after=="after"],breaks=10,col="red",xla
 tapply(logweightgobies2, spottedGoby$before_after, mean)
 tapply(logweightgobies2, spottedGoby$before_after, sd)
 t.test(logweightgobies2~spottedGoby$before_after, data=spottedGoby, var.equal=F)
-
+wilcox.test(spottedGoby$fishWeight~spottedGoby$before_after)
 #final graph
 spottedGoby$before_after<-factor(spottedGoby$before_after,levels=c("before","after"))
 ggplot(spottedGoby, aes(before_after, y=fishTotalLength)) +
