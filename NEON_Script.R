@@ -214,39 +214,44 @@ Env<-read.csv(file.choose(),header=T)
 sd(Env$waterTemp,na.rm=T) #EXAMPLE
 sd(Env$waterTemp) #EXAMPLE
 
-parse_datetime(Env$DATE, "%m/%d/%y %I:%M %p") #Doesn't work now
 
 EnvCUPE<-subset(Env, Env$SITE=="CUPE") 
-class(EnvCUPE$DATE)
+
 EnvCUPE$DATE<-as.Date(EnvCUPE$DATE)
-head(EnvCUPE$DATE)
-class(EnvCUPE$DATE)
 
 library(ggplot2)
 
 qplot(x=DATE,y=waterTemp, 
       data=EnvCUPE,
-      main="water temp Cupe")  
+      main="water temp Cupe",xlab="Year",ylab="Water Temp (C)")  
 qplot(x=DATE,y=pH, data=EnvCUPE,main="water pH")
-qplot(x=DATE,y=dissolvedOxygen,data=EnvCUPE,main="dissolved Oxygen")
+#removing the outlier
+EnvCUPE.pH<-subset(Env,Env$SITE=="CUPE" & Env$pH>5)
+EnvCUPE.pH$DATE<-as.Date(EnvCUPE.pH$DATE)
+qplot(x=DATE,y=pH, data=EnvCUPE.pH,main="water Ph",xlab="year")
+
+
+qplot(x=DATE,y=dissolvedOxygen,data=EnvCUPE,main="dissolved Oxygen",ylab="Dissolved Oxygen (mg/L)",xlab="Year")
 qplot(x=DATE,y=dissolvedOxygenSaturation,data=EnvCUPE,main="dissloved Oxygen saturation")
 
 EnvGUIL<-subset(Env, Env$SITE=="GUIL")
 EnvGUIL$DATE<-as.Date(EnvGUIL$DATE)
 qplot(x=DATE,y=waterTemp, 
       data=EnvGUIL,
-      main="water temp Cupe")  
+      main="water temp Cupe",xlab="Year",ylab="Water Temp (C)")  
+#removing temp outlier
+EnvGUIL.temp<-subset(Env,Env$SITE=="GUIL" & Env$waterTemp>15)
+EnvGUIL.temp$DATE<-as.Date(EnvGUIL.temp$DATE)
+qplot(x=DATE,y=waterTemp, data=EnvGUIL.temp,main="water temp",xlab="Year",ylab="Water Temp (C)")
+
 qplot(x=DATE,y=pH, data=EnvGUIL,main="water pH")
-qplot(x=DATE,y=dissolvedOxygen,data=EnvGUIL,main="dissolved Oxygen")
+#removing pH outlier
+EnvGUIL.pH<-subset(Env,Env$SITE=="GUIL" & Env$pH>5)
+EnvGUIL.pH$DATE<-as.Date(EnvGUIL.pH$DATE)
+qplot(x=DATE,y=pH,data=EnvGUIL.pH,main="water pH",xlab="Year",ylab="pH")
+
+qplot(x=DATE,y=dissolvedOxygen,data=EnvGUIL,main="dissolved Oxygen",xlab="Year",ylab="Dissolved Oxygen (mg/L)")
+
 qplot(x=DATE,y=dissolvedOxygenSaturation,data=EnvGUIL,main="dissloved Oxygen saturation")
 
-EnvCUPE$pH
-qplot(x=DATE[pH>5],y=pH[pH>5], data=EnvCUPE,main="water pH")
-plot(pH[pH>5]~DATE[pH>5],data=EnvCUPE)
-EnvCUPE.pH<-subset(Env, Env$SITE=="CUPE" & Env$pH>5) 
-EnvCUPE.pH$pH
-EnvCUPE$pH
-length(EnvCUPE$pH)
-length(EnvCUPE.pH$pH)
-sort(EnvCUPE$pH)
-sort(EnvCUPE.pH$pH)
+
