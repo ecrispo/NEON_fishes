@@ -255,3 +255,34 @@ qplot(x=DATE,y=dissolvedOxygen,data=EnvGUIL,main="dissolved Oxygen",xlab="Year",
 qplot(x=DATE,y=dissolvedOxygenSaturation,data=EnvGUIL,main="dissloved Oxygen saturation")
 
 
+Xiphophorus$DATE
+Xiphophorus$DATE<-as.Date(Xiphophorus$DATE)
+qplot(x=DATE,y=fishTotalLength, 
+      data=Xiphophorus) 
+qplot(x=DATE,y=fishWeight, 
+      data=Xiphophorus) 
+
+PoeciliaGUIL$DATE<-as.Date(PoeciliaGUIL$DATE)
+qplot(x=DATE,y=fishTotalLength, 
+      data=PoeciliaGUIL)
+
+PoeciliaCUPE$DATE<-as.Date(PoeciliaCUPE$DATE)
+qplot(x=DATE,y=fishTotalLength, 
+      data=PoeciliaCUPE)
+
+spottedGoby$DATE<-as.Date(spottedGoby$DATE)
+qplot(x=DATE,y=fishTotalLength, 
+      data=spottedGoby)
+
+Agonostomus$DATE
+Agonostomus2<- subset(fish, fish$SPECIES=="Agonostomus_monticola" & DATE < "2018-06-01")
+Agonostomus2
+
+Agonostomus2$DATE<-as.Date(Agonostomus2$DATE)
+qplot(x=DATE,y=fishTotalLength, 
+      data=Agonostomus2)
+
+mosquito$DATE<-as.Date(mosquito$DATE)
+qplot(x=DATE,y=fishTotalLength, 
+      data=mosquito)
+
