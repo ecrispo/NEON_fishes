@@ -255,34 +255,69 @@ qplot(x=DATE,y=dissolvedOxygen,data=EnvGUIL,main="dissolved Oxygen",xlab="Year",
 qplot(x=DATE,y=dissolvedOxygenSaturation,data=EnvGUIL,main="dissloved Oxygen saturation")
 
 
+#New analysis
+
+
 Xiphophorus$DATE
 Xiphophorus$DATE<-as.Date(Xiphophorus$DATE)
 qplot(x=DATE,y=fishTotalLength, 
       data=Xiphophorus) 
-qplot(x=DATE,y=fishWeight, 
-      data=Xiphophorus) 
+Xiphophorus2<- subset(fish, fish$SPECIES=="Xiphophorus_hellerii" & DATE < "2018-06-01")
+Xiphophorus2
+hist(Xiphophorus2$fishTotalLength[Xiphophorus2$before_after=="before"],breaks=16,col="red",xlab="Fish total lenght(mm)",ylab="Number of fish",main="Fish lenght distribution (before)")
+hist(Xiphophorus2$fishTotalLength[Xiphophorus2$before_after=="after"],breaks=20,col="red",xlab="Fish total lenght(mm)",ylab="Number of fish",main="Fish lenght distribution (after)")
+tapply(Xiphophorus2$fishTotalLength, Xiphophorus2$before_after, mean)
+tapply(Xiphophorus2$fishTotalLength, Xiphophorus2$before_after, sd)
+wilcox.test(Xiphophorus2$fishTotalLength~Xiphophorus2$before_after)
+t.test(Xiphophorus$fishTotalLength~Xiphophorus$before_after, data=Xiphophorus, var.equal=F)
+t.test(Xiphophorus$fishTotalLength~Xiphophorus$before_after, data=Xiphophorus, var.equal=T)
+Xiphophorus2$before_after<-factor(Xiphophorus2$before_after,levels=c("before","after"))
+ggplot(Xiphophorus2, aes(x=before_after, y=fishTotalLength)) +
+  geom_boxplot(fill="white",
+               color="black", notch=TRUE)+ geom_point(position="jitter")
+ggplot(Xiphophorus2, aes(before_after, y=fishTotalLength)) +
+  geom_violin(fill="white") + geom_boxplot(fill="white", width=.2)+
+  labs(x="Timing of data collection reletive to hurricanes",y="Total Fish Length (mm)")
 
-PoeciliaGUIL$DATE<-as.Date(PoeciliaGUIL$DATE)
-qplot(x=DATE,y=fishTotalLength, 
-      data=PoeciliaGUIL)
-
-PoeciliaCUPE$DATE<-as.Date(PoeciliaCUPE$DATE)
-qplot(x=DATE,y=fishTotalLength, 
-      data=PoeciliaCUPE)
-
-spottedGoby$DATE<-as.Date(spottedGoby$DATE)
-qplot(x=DATE,y=fishTotalLength, 
-      data=spottedGoby)
 
 Agonostomus$DATE
 Agonostomus2<- subset(fish, fish$SPECIES=="Agonostomus_monticola" & DATE < "2018-06-01")
 Agonostomus2
-
 Agonostomus2$DATE<-as.Date(Agonostomus2$DATE)
 qplot(x=DATE,y=fishTotalLength, 
       data=Agonostomus2)
+hist(Agonostomus2$fishTotalLength[Agonostomus2$before_after=="before"],breaks=16,col="red",xlab="Fish total length(mm)",ylab="Number of fish",main="Fish lenght distribution (before)")
+hist(Agonostomus2$fishTotalLength[Agonostomus2$before_after=="after"],breaks=16,col="red",xlab="Fish total length(mm)",ylab="Number of fish",main="Fish lenght distribution (after)")
+tapply(Agonostomus2$fishTotalLength, Agonostomus2$before_after, mean)     
+tapply(Agonostomus2$fishTotalLength, Agonostomus2$before_after, sd) 
+tapply(Agonostomus2$fishTotalLength, Agonostomus2$before_after, length) 
+t.test(Agonostomus2$fishTotalLength~Agonostomus2$before_after, data=Agonostomus2, var.equal=F)
+Agonostomus2$before_after<-factor(Agonostomus2$before_after,levels=c("before","after"))
+ggplot(Agonostomus2, aes(x=before_after, y=fishTotalLength)) +
+  geom_boxplot(fill="white",
+               color="black", notch=TRUE)+ geom_point(position="jitter")
+ggplot(Agonostomus2, aes(before_after, y=fishTotalLength)) +
+  geom_violin(fill="white") + geom_boxplot(fill="white", width=.2)+
+  labs(x="Timing of data collection reletive to hurricanes",y="Total Fish Length (mm)")
+
+
+
 
 mosquito$DATE<-as.Date(mosquito$DATE)
 qplot(x=DATE,y=fishTotalLength, 
       data=mosquito)
+hist(mosquito$fishTotalLength[mosquito$before_after=="before"],breaks=16,col="red",xlab="Fish total lenght(mm)",ylab="Number of fish",main="Fish lenght distribution (before)")
+hist(mosquito$fishTotalLength[mosquito$before_after=="after"],breaks=16,col="red",xlab="Fish total lenght(mm)",ylab="Number of fish",main="Fish lenght distribution (after)")
+tapply(mosquito$fishTotalLength, mosquito$before_after, mean)     
+tapply(mosquito$fishTotalLength, mosquito$before_after, sd) 
+tapply(mosquito$fishTotalLength, mosquito$before_after, length) 
+t.test(mosquito$fishTotalLength~mosquito$before_after, data=mosquito, var.equal=F)
+wilcox.test(mosquito$fishTotalLength~mosquito$before_after)
+mosquito$before_after<-factor(mosquito$before_after,levels=c("before","after"))
+ggplot(mosquito, aes(x=before_after, y=fishTotalLength)) +
+  geom_boxplot(fill="white",
+               color="black", notch=TRUE)+ geom_point(position="jitter")
+ggplot(mosquito, aes(before_after, y=fishTotalLength)) +
+  geom_violin(fill="white") + geom_boxplot(fill="white", width=.2)+
+  labs(x="Timing of data collection reletive to hurricanes",y="Total Fish Length (mm)")
 
