@@ -260,17 +260,27 @@ qplot(x=DATE,y=dissolvedOxygenSaturation,data=EnvGUIL,main="dissloved Oxygen sat
 
 Xiphophorus$DATE
 Xiphophorus$DATE<-as.Date(Xiphophorus$DATE)
-qplot(x=DATE,y=fishTotalLength, 
-      data=Xiphophorus) 
+qplot(x=DATE,y=fishTotalLength, data=Xiphophorus) 
+#Added this one:
+Xiphophorus2$DATE<-as.Date(Xiphophorus2$DATE)
+qplot(x=DATE,y=fishTotalLength, data=Xiphophorus2) 
+#I was worried that the data were bimodal because you have data from two different months in "after"
+#But even when you look only at Feb, the "after" data are biomodal. 
+hist(Xiphophorus2$fishTotalLength[Xiphophorus2$DATE > "2017-12-07"])
+
 Xiphophorus2<- subset(fish, fish$SPECIES=="Xiphophorus_hellerii" & DATE < "2018-06-01")
 Xiphophorus2
 hist(Xiphophorus2$fishTotalLength[Xiphophorus2$before_after=="before"],breaks=16,col="red",xlab="Fish total lenght(mm)",ylab="Number of fish",main="Fish lenght distribution (before)")
 hist(Xiphophorus2$fishTotalLength[Xiphophorus2$before_after=="after"],breaks=20,col="red",xlab="Fish total lenght(mm)",ylab="Number of fish",main="Fish lenght distribution (after)")
 tapply(Xiphophorus2$fishTotalLength, Xiphophorus2$before_after, mean)
 tapply(Xiphophorus2$fishTotalLength, Xiphophorus2$before_after, sd)
+#The Mann-Whitney-Wilcoxon rank sum test is most appropriate 
+#because of the non-normal, bimodel distribution
 wilcox.test(Xiphophorus2$fishTotalLength~Xiphophorus2$before_after)
 t.test(Xiphophorus$fishTotalLength~Xiphophorus$before_after, data=Xiphophorus, var.equal=F)
 t.test(Xiphophorus$fishTotalLength~Xiphophorus$before_after, data=Xiphophorus, var.equal=T)
+
+#Change order of time periods so that "before" appears before "after"
 Xiphophorus2$before_after<-factor(Xiphophorus2$before_after,levels=c("before","after"))
 ggplot(Xiphophorus2, aes(x=before_after, y=fishTotalLength)) +
   geom_boxplot(fill="white",
@@ -278,7 +288,7 @@ ggplot(Xiphophorus2, aes(x=before_after, y=fishTotalLength)) +
 ggplot(Xiphophorus2, aes(before_after, y=fishTotalLength)) +
   geom_violin(fill="white") + geom_boxplot(fill="white", width=.2)+
   labs(x="Timing of data collection reletive to hurricanes",y="Total Fish Length (mm)")
-
+#It is easy to see the bimodal distribution in the violin plot. Easier than in the other two plots.
 
 Agonostomus$DATE
 Agonostomus2<- subset(fish, fish$SPECIES=="Agonostomus_monticola" & DATE < "2018-06-01")
@@ -287,6 +297,7 @@ Agonostomus2$DATE<-as.Date(Agonostomus2$DATE)
 qplot(x=DATE,y=fishTotalLength, 
       data=Agonostomus2)
 hist(Agonostomus2$fishTotalLength[Agonostomus2$before_after=="before"],breaks=16,col="red",xlab="Fish total length(mm)",ylab="Number of fish",main="Fish lenght distribution (before)")
+#This one below also looks a bit bimodal:
 hist(Agonostomus2$fishTotalLength[Agonostomus2$before_after=="after"],breaks=16,col="red",xlab="Fish total length(mm)",ylab="Number of fish",main="Fish lenght distribution (after)")
 tapply(Agonostomus2$fishTotalLength, Agonostomus2$before_after, mean)     
 tapply(Agonostomus2$fishTotalLength, Agonostomus2$before_after, sd) 
@@ -299,7 +310,11 @@ ggplot(Agonostomus2, aes(x=before_after, y=fishTotalLength)) +
 ggplot(Agonostomus2, aes(before_after, y=fishTotalLength)) +
   geom_violin(fill="white") + geom_boxplot(fill="white", width=.2)+
   labs(x="Timing of data collection reletive to hurricanes",y="Total Fish Length (mm)")
-
+#I am doing this out of curiosity:
+wilcox.test(Agonostomus2$fishTotalLength~Agonostomus2$before_after)
+#P values are typically lower for the t-test than for the rank-based test
+#But in this case the P value is even lower for the rank test
+#This suggests to me that the t-test is not valid due to the bimodal distribution
 
 
 
@@ -320,4 +335,15 @@ ggplot(mosquito, aes(x=before_after, y=fishTotalLength)) +
 ggplot(mosquito, aes(before_after, y=fishTotalLength)) +
   geom_violin(fill="white") + geom_boxplot(fill="white", width=.2)+
   labs(x="Timing of data collection reletive to hurricanes",y="Total Fish Length (mm)")
+#If you want to strive for consistency, it would be valid to use Mann-Whitney-Wilcoxon test for all three analyses
+#It would not change any of your conclusions
 
+#I like the violin plots because you can see the distributions like in the histograms
+#I also think the graphs with the date on the X axis are valuablen because they show visually when the samples were collected
+
+#The mosquitofish did not evolve in the presence of hurricanes
+#The other two (mountain mullet and swordtail) got smaller
+#It is typical that animals will evolve smaller size in the face of stress
+#This is called r selection (in contrast to K selection)
+#Look up some articles on r versus K selection
+#There should be plenty of old (i.e. 'classic') articles on this topic
