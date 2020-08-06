@@ -347,3 +347,10 @@ ggplot(mosquito, aes(before_after, y=fishTotalLength)) +
 #This is called r selection (in contrast to K selection)
 #Look up some articles on r versus K selection
 #There should be plenty of old (i.e. 'classic') articles on this topic
+
+
+#The code below puts on lines at the hurricane time periods:
+pHplot <- ggplot(EnvGUIL,aes(x=DATE,y=pH),xlab="Year",ylab="pH") + geom_point()
+pHplot
+dates_vline <- as.Date(c("2017-09-06", "2017-09-20"))  
+pHplot + geom_vline(xintercept=dates_vline, linetype="dashed")
