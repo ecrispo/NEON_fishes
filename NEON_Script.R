@@ -403,3 +403,24 @@ pHplot <- ggplot(EnvGUIL,aes(x=DATE,y=pH),xlab="Year",ylab="pH") + geom_point()
 pHplot
 dates_vline <- as.Date(c("2017-09-06", "2017-09-20"))  
 pHplot + geom_vline(xintercept=dates_vline, linetype="dashed")
+
+
+PoeciliaGUIL2<- subset(PoeciliaGUIL, DATE < "2018-06-01")
+PoeciliaGUIL2
+hist(PoeciliaGUIL2$fishTotalLength[PoeciliaGUIL2$before_after=="before"],breaks=16,col="red",xlab="Fish total lenght(mm)",ylab="Number of fish",main="Fish lenght distribution (before)")
+hist(PoeciliaGUIL2$fishTotalLength[PoeciliaGUIL2$before_after=="after"],breaks=20,col="red",xlab="Fish total lenght(mm)",ylab="Number of fish",main="Fish lenght distribution (after)")
+tapply(PoeciliaGUIL2$fishTotalLength, PoeciliaGUIL2$before_after, mean)
+tapply(PoeciliaGUIL2$fishTotalLength, PoeciliaGUIL2$before_after, sd)
+wilcox.test(PoeciliaGUIL2$fishTotalLength~PoeciliaGUIL2$before_after)
+#Not necessary to use the rank based test because data are normally distributed
+#variances not similar
+t.test(PoeciliaGUIL2$fishTotalLength~PoeciliaGUIL2$before_after,var.equal=F)
+PoeciliaGUIL2$before_after<-factor(PoeciliaGUIL2$before_after,levels=c("before","after"))
+ggplot(PoeciliaGUIL2, aes(before_after, y=fishTotalLength)) +
+  geom_violin(fill="white") + geom_boxplot(fill="white", width=.2)+
+  labs(x="Timing of data collection relative to hurricanes",y="Total Fish Length (mm)")
+PoeciliaGUIL2$DATE<-as.Date(PoeciliaGUIL2$DATE)
+guppyGraph <- ggplot(PoeciliaGUIL2,aes(x=DATE,y=fishTotalLength))+labs(x="Year",y="Fish length (mm)")+ geom_point()
+guppyGraph
+dates_vline <- as.Date(c("2017-09-06", "2017-09-20"))  
+guppyGraph + geom_vline(xintercept=dates_vline, linetype="dashed")
