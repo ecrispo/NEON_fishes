@@ -221,3 +221,12 @@ guppyGraph <- ggplot(PoeciliaGUIL2,aes(x=DATE,y=fishTotalLength))+labs(x="Year",
 guppyGraph
 dates_vline <- as.Date(c("2017-09-06", "2017-09-20"))  
 guppyGraph + geom_vline(xintercept=dates_vline, linetype="dashed")
+
+#removing 0 values from guppies
+guppy3<-subset(PoeciliaGUIL2, PoeciliaGUIL2$fishTotalLength>1)
+guppy3
+hist(guppy3$fishTotalLength[guppy3$before_after=="before"],breaks=16,col="red",xlab="Fish total lenght(mm)",ylab="Number of fish",main="Fish lenght distribution (before)")
+hist(guppy3$fishTotalLength[guppy3$before_after=="after"],breaks=20,col="red",xlab="Fish total lenght(mm)",ylab="Number of fish",main="Fish lenght distribution (after)")
+tapply(guppy3$fishTotalLength, guppy3$before_after, mean)
+tapply(guppy3$fishTotalLength, guppy3$before_after, sd)
+
