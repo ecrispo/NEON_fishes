@@ -15,8 +15,6 @@ Poecilia<-subset(fish,fish$SPECIES=="Poecilia_reticulata")
 summary(Poecilia)
 PoeciliaCUPE<-subset(Poecilia,Poecilia$SITE=="CUPE")
 PoeciliaCUPE$DATE<-as.Date(PoeciliaCUPE$DATE)
-qplot(x=DATE,y=fishTotalLength, 
-      data=PoeciliaCUPE)
 PoeciliaGUIL<-subset(Poecilia,Poecilia$SITE=="GUIL")
 PoeciliaGUIL$DATE<-as.Date(PoeciliaGUIL$DATE)
 qplot(x=DATE,y=fishTotalLength, 
@@ -101,8 +99,9 @@ Xiphophorus$DATE<-as.Date(Xiphophorus$DATE)
 
 qplot(x=DATE,y=fishTotalLength, data=Xiphophorus) 
 #Added this one:
-Xiphophorus2$DATE<-as.Date(Xiphophorus2$DATE)
-Xiphophorus2<- subset(fish, fish$SPECIES=="Xiphophorus_hellerii" & DATE < "2018-06-01")
+Xiphophorus
+Xiphophorus$DATE<-as.Date(Xiphophorus$DATE)
+Xiphophorus2<- subset(Xiphophorus, SPECIES=="Xiphophorus_hellerii" & DATE < "2018-06-01")
 Xiphophorus2
 
 qplot(x=DATE,y=fishTotalLength, data=Xiphophorus2) 
@@ -111,18 +110,14 @@ xiph
 dates_vline <- as.Date(c("2017-09-06", "2017-09-20"))  
 xiph + geom_vline(xintercept=dates_vline, linetype="dashed")
 
-hist(Xiphophorus2$fishTotalLength[Xiphophorus2$DATE > "2017-12-07"])
-
-
-hist(Xiphophorus2$fishTotalLength[Xiphophorus2$before_after=="before"],breaks=16,col="red",xlab="Fish total lenght(mm)",ylab="Number of fish",main="Fish lenght distribution (before)")
-hist(Xiphophorus2$fishTotalLength[Xiphophorus2$before_after=="after"],breaks=20,col="red",xlab="Fish total lenght(mm)",ylab="Number of fish",main="Fish lenght distribution (after)")
+hist(Xiphophorus2$fishTotalLength[Xiphophorus2$before_after=="before"],breaks=16,col="red",xlab="Fish total length(mm)",ylab="Number of fish",main="Fish length distribution (before)")
+hist(Xiphophorus2$fishTotalLength[Xiphophorus2$before_after=="after"],breaks=20,col="red",xlab="Fish total length(mm)",ylab="Number of fish",main="Fish length distribution (after)")
 tapply(Xiphophorus2$fishTotalLength, Xiphophorus2$before_after, mean)
 tapply(Xiphophorus2$fishTotalLength, Xiphophorus2$before_after, sd)
+tapply(Xiphophorus2$fishTotalLength, Xiphophorus2$before_after, length)
 #The Mann-Whitney-Wilcoxon rank sum test is most appropriate 
 #because of the non-normal, bimodel distribution
 wilcox.test(Xiphophorus2$fishTotalLength~Xiphophorus2$before_after)
-t.test(Xiphophorus$fishTotalLength~Xiphophorus$before_after, data=Xiphophorus, var.equal=F)
-t.test(Xiphophorus$fishTotalLength~Xiphophorus$before_after, data=Xiphophorus, var.equal=T)
 
 #Change order of time periods so that "before" appears before "after"
 Xiphophorus2$before_after<-factor(Xiphophorus2$before_after,levels=c("before","after"))
@@ -135,9 +130,10 @@ ggplot(Xiphophorus2, aes(before_after, y=fishTotalLength)) +
 #It is easy to see the bimodal distribution in the violin plot. Easier than in the other two plots.
 
 Agonostomus$DATE
-Agonostomus2<- subset(fish, fish$SPECIES=="Agonostomus_monticola" & DATE < "2018-06-01")
+Agonostomus$DATE<-as.Date(Agonostomus$DATE)
+Agonostomus2<- subset(Agonostomus, SPECIES=="Agonostomus_monticola" & DATE < "2018-06-01")
 Agonostomus2
-Agonostomus2$DATE<-as.Date(Agonostomus2$DATE)
+
 qplot(x=DATE,y=fishTotalLength, 
       data=Agonostomus2)
 agon <- ggplot(Agonostomus2,aes(x=DATE,y=fishTotalLength))+labs(x="Year",y="Fish length (mm)")+ geom_point()
@@ -145,13 +141,12 @@ agon
 dates_vline <- as.Date(c("2017-09-06", "2017-09-20"))  
 agon + geom_vline(xintercept=dates_vline, linetype="dashed")
 
-hist(Agonostomus2$fishTotalLength[Agonostomus2$before_after=="before"],breaks=16,col="red",xlab="Fish total length(mm)",ylab="Number of fish",main="Fish lenght distribution (before)")
+hist(Agonostomus2$fishTotalLength[Agonostomus2$before_after=="before"],breaks=16,col="red",xlab="Fish total length (mm)",ylab="Number of fish",main="Fish length distribution (before)")
 #This one below also looks a bit bimodal:
-hist(Agonostomus2$fishTotalLength[Agonostomus2$before_after=="after"],breaks=16,col="red",xlab="Fish total length(mm)",ylab="Number of fish",main="Fish lenght distribution (after)")
+hist(Agonostomus2$fishTotalLength[Agonostomus2$before_after=="after"],breaks=16,col="red",xlab="Fish total length (mm)",ylab="Number of fish",main="Fish length distribution (after)")
 tapply(Agonostomus2$fishTotalLength, Agonostomus2$before_after, mean)     
 tapply(Agonostomus2$fishTotalLength, Agonostomus2$before_after, sd) 
 tapply(Agonostomus2$fishTotalLength, Agonostomus2$before_after, length) 
-t.test(Agonostomus2$fishTotalLength~Agonostomus2$before_after, data=Agonostomus2, var.equal=F)
 Agonostomus2$before_after<-factor(Agonostomus2$before_after,levels=c("before","after"))
 ggplot(Agonostomus2, aes(x=before_after, y=fishTotalLength)) +
   geom_boxplot(fill="white",
@@ -159,12 +154,7 @@ ggplot(Agonostomus2, aes(x=before_after, y=fishTotalLength)) +
 ggplot(Agonostomus2, aes(before_after, y=fishTotalLength)) +
   geom_violin(fill="white") + geom_boxplot(fill="white", width=.2)+
   labs(x="Timing of data collection relative to hurricanes",y="Total Fish Length (mm)")
-#I am doing this out of curiosity:
 wilcox.test(Agonostomus2$fishTotalLength~Agonostomus2$before_after)
-#P values are typically lower for the t-test than for the rank-based test
-#But in this case the P value is even lower for the rank test
-#This suggests to me that the t-test is not valid due to the bimodal distribution
-
 
 
 mosquito$DATE<-as.Date(mosquito$DATE)
@@ -174,12 +164,11 @@ mosq <- ggplot(mosquito,aes(x=DATE,y=fishTotalLength))+labs(x="Year",y="Fish Len
 mosq
 dates_vline <- as.Date(c("2017-09-06", "2017-09-20"))  
 mosq + geom_vline(xintercept=dates_vline, linetype="dashed")
-hist(mosquito$fishTotalLength[mosquito$before_after=="before"],breaks=16,col="red",xlab="Fish total lenght(mm)",ylab="Number of fish",main="Fish lenght distribution (before)")
-hist(mosquito$fishTotalLength[mosquito$before_after=="after"],breaks=16,col="red",xlab="Fish total lenght(mm)",ylab="Number of fish",main="Fish lenght distribution (after)")
+hist(mosquito$fishTotalLength[mosquito$before_after=="before"],breaks=16,col="red",xlab="Fish total length (mm)",ylab="Number of fish",main="Fish length distribution (before)")
+hist(mosquito$fishTotalLength[mosquito$before_after=="after"],breaks=16,col="red",xlab="Fish total length (mm)",ylab="Number of fish",main="Fish length distribution (after)")
 tapply(mosquito$fishTotalLength, mosquito$before_after, mean)     
 tapply(mosquito$fishTotalLength, mosquito$before_after, sd) 
 tapply(mosquito$fishTotalLength, mosquito$before_after, length) 
-t.test(mosquito$fishTotalLength~mosquito$before_after, data=mosquito, var.equal=F)
 wilcox.test(mosquito$fishTotalLength~mosquito$before_after)
 mosquito$before_after<-factor(mosquito$before_after,levels=c("before","after"))
 ggplot(mosquito, aes(x=before_after, y=fishTotalLength)) +
@@ -188,45 +177,27 @@ ggplot(mosquito, aes(x=before_after, y=fishTotalLength)) +
 ggplot(mosquito, aes(before_after, y=fishTotalLength)) +
   geom_violin(fill="white") + geom_boxplot(fill="white", width=.2)+
   labs(x="Timing of data collection relative to hurricanes",y="Total Fish Length (mm)")
-#If you want to strive for consistency, it would be valid to use Mann-Whitney-Wilcoxon test for all three analyses
-#It would not change any of your conclusions
-
-#I like the violin plots because you can see the distributions like in the histograms
-#I also think the graphs with the date on the X axis are valuablen because they show visually when the samples were collected
-
-#The mosquitofish did not evolve in the presence of hurricanes
-#The other two (mountain mullet and swordtail) got smaller
-#It is typical that animals will evolve smaller size in the face of stress
-#This is called r selection (in contrast to K selection)
-#Look up some articles on r versus K selection
-#There should be plenty of old (i.e. 'classic') articles on this topic
 
 PoeciliaGUIL2<- subset(PoeciliaGUIL, DATE < "2018-06-01")
 PoeciliaGUIL2
 summary(PoeciliaGUIL2)
-hist(PoeciliaGUIL2$fishTotalLength[PoeciliaGUIL2$before_after=="before"],breaks=16,col="red",xlab="Fish total lenght(mm)",ylab="Number of fish",main="Fish lenght distribution (before)")
-hist(PoeciliaGUIL2$fishTotalLength[PoeciliaGUIL2$before_after=="after"],breaks=20,col="red",xlab="Fish total lenght(mm)",ylab="Number of fish",main="Fish lenght distribution (after)")
-tapply(PoeciliaGUIL2$fishTotalLength, PoeciliaGUIL2$before_after, mean)
-tapply(PoeciliaGUIL2$fishTotalLength, PoeciliaGUIL2$before_after, sd)
-wilcox.test(PoeciliaGUIL2$fishTotalLength~PoeciliaGUIL2$before_after)
-#Not necessary to use the rank based test because data are normally distributed
-#variances not similar
-t.test(PoeciliaGUIL2$fishTotalLength~PoeciliaGUIL2$before_after,var.equal=F)
-PoeciliaGUIL2$before_after<-factor(PoeciliaGUIL2$before_after,levels=c("before","after"))
-ggplot(PoeciliaGUIL2, aes(before_after, y=fishTotalLength)) +
+#removing 0 values from guppies
+PoeciliaGUIL3<-subset(PoeciliaGUIL2, PoeciliaGUIL2$fishTotalLength>1)
+PoeciliaGUIL3
+summary(PoeciliaGUIL3)
+hist(PoeciliaGUIL3$fishTotalLength[PoeciliaGUIL3$before_after=="before"],breaks=16,col="red",xlab="Fish total length(mm)",ylab="Number of fish",main="Fish length distribution (before)")
+hist(PoeciliaGUIL3$fishTotalLength[PoeciliaGUIL3$before_after=="after"],breaks=20,col="red",xlab="Fish total length(mm)",ylab="Number of fish",main="Fish length distribution (after)")
+tapply(PoeciliaGUIL3$fishTotalLength, PoeciliaGUIL3$before_after, mean)
+tapply(PoeciliaGUIL3$fishTotalLength, PoeciliaGUIL3$before_after, sd)
+tapply(PoeciliaGUIL3$fishTotalLength, PoeciliaGUIL3$before_after, length)
+t.test(PoeciliaGUIL3$fishTotalLength~PoeciliaGUIL3$before_after,var.equal=F)
+wilcox.test(PoeciliaGUIL3$fishTotalLength~PoeciliaGUIL3$before_after)
+PoeciliaGUIL3$before_after<-factor(PoeciliaGUIL3$before_after,levels=c("before","after"))
+ggplot(PoeciliaGUIL3, aes(before_after, y=fishTotalLength)) +
   geom_violin(fill="white") + geom_boxplot(fill="white", width=.2)+
   labs(x="Timing of data collection relative to hurricanes",y="Total Fish Length (mm)")
-PoeciliaGUIL2$DATE<-as.Date(PoeciliaGUIL2$DATE)
-guppyGraph <- ggplot(PoeciliaGUIL2,aes(x=DATE,y=fishTotalLength))+labs(x="Year",y="Fish length (mm)")+ geom_point()
-guppyGraph
+PoeciliaGUIL3$DATE<-as.Date(PoeciliaGUIL3$DATE)
+guppyGraph2 <- ggplot(PoeciliaGUIL3,aes(x=DATE,y=fishTotalLength))+labs(x="Year",y="Fish length (mm)")+ geom_point()
+guppyGraph2
 dates_vline <- as.Date(c("2017-09-06", "2017-09-20"))  
-guppyGraph + geom_vline(xintercept=dates_vline, linetype="dashed")
-
-#removing 0 values from guppies
-guppy3<-subset(PoeciliaGUIL2, PoeciliaGUIL2$fishTotalLength>1)
-guppy3
-hist(guppy3$fishTotalLength[guppy3$before_after=="before"],breaks=16,col="red",xlab="Fish total lenght(mm)",ylab="Number of fish",main="Fish lenght distribution (before)")
-hist(guppy3$fishTotalLength[guppy3$before_after=="after"],breaks=20,col="red",xlab="Fish total lenght(mm)",ylab="Number of fish",main="Fish lenght distribution (after)")
-tapply(guppy3$fishTotalLength, guppy3$before_after, mean)
-tapply(guppy3$fishTotalLength, guppy3$before_after, sd)
-
+guppyGraph2 + geom_vline(xintercept=dates_vline, linetype="dashed")
