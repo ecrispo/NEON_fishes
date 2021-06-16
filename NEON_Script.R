@@ -105,7 +105,7 @@ Xiphophorus2<- subset(Xiphophorus, SPECIES=="Xiphophorus_hellerii" & DATE < "201
 Xiphophorus2
 
 qplot(x=DATE,y=fishTotalLength, data=Xiphophorus2) 
-xiph <- ggplot(Xiphophorus2,aes(x=DATE,y=fishTotalLength))+labs(x="Year",y="Fish length (mm)")+ geom_point()
+xiph <- ggplot(Xiphophorus2,aes(x=DATE,y=fishTotalLength))+labs(x="Year",y="Fish Length (mm)")+ geom_point()
 xiph
 dates_vline <- as.Date(c("2017-09-06", "2017-09-20"))  
 xiph + geom_vline(xintercept=dates_vline, linetype="dashed")
@@ -136,7 +136,7 @@ Agonostomus2
 
 qplot(x=DATE,y=fishTotalLength, 
       data=Agonostomus2)
-agon <- ggplot(Agonostomus2,aes(x=DATE,y=fishTotalLength))+labs(x="Year",y="Fish length (mm)")+ geom_point()
+agon <- ggplot(Agonostomus2,aes(x=DATE,y=fishTotalLength))+labs(x="Year",y="Fish Length (mm)")+ geom_point()
 agon
 dates_vline <- as.Date(c("2017-09-06", "2017-09-20"))  
 agon + geom_vline(xintercept=dates_vline, linetype="dashed")
@@ -176,7 +176,7 @@ ggplot(mosquito, aes(x=before_after, y=fishTotalLength)) +
                color="black", notch=TRUE)+ geom_point(position="jitter")
 ggplot(mosquito, aes(before_after, y=fishTotalLength)) +
   geom_violin(fill="white") + geom_boxplot(fill="white", width=.2)+
-  labs(x="Timing of data collection relative to hurricanes",y="Total Fish Length (mm)")
+  labs(x="Timing of data collection relative to hurricanes",y="Total Fish length (mm)")
 
 PoeciliaGUIL2<- subset(PoeciliaGUIL, DATE < "2018-06-01")
 PoeciliaGUIL2
@@ -197,7 +197,20 @@ ggplot(PoeciliaGUIL3, aes(before_after, y=fishTotalLength)) +
   geom_violin(fill="white") + geom_boxplot(fill="white", width=.2)+
   labs(x="Timing of data collection relative to hurricanes",y="Total Fish Length (mm)")
 PoeciliaGUIL3$DATE<-as.Date(PoeciliaGUIL3$DATE)
-guppyGraph2 <- ggplot(PoeciliaGUIL3,aes(x=DATE,y=fishTotalLength))+labs(x="Year",y="Fish length (mm)")+ geom_point()
+guppyGraph2 <- ggplot(PoeciliaGUIL3,aes(x=DATE,y=fishTotalLength))+labs(x="Year",y="Fish Length (mm)")+ geom_point()
 guppyGraph2
 dates_vline <- as.Date(c("2017-09-06", "2017-09-20"))  
 guppyGraph2 + geom_vline(xintercept=dates_vline, linetype="dashed")
+
+library(ggplot2)
+library(maps)
+library(mapdata)
+library(ggmap)
+data<-read.csv(file.choose(),header=T)
+data$river<-as.factor(data$river)
+is.factor(data$river)
+Location <- c(-67.3, 17.86, -66.6, 18.4)
+myMap <- get_map(location=Location, source="stamen", maptype="toner", crop=FALSE) 
+ggmap(myMap)
+ggmap(myMap)+ geom_point(aes(x = longitude, y = latitude,color=river), data = data, alpha = .5, size = 5)+
+  scale_colour_manual(values=c("Rio Guilarte" = "black", "Rio Cupeyes" = "gray36"))+xlab("longitude") + ylab("latitude")
