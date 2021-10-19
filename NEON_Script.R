@@ -214,3 +214,69 @@ myMap <- get_map(location=Location, source="stamen", maptype="toner", crop=FALSE
 ggmap(myMap)
 ggmap(myMap)+ geom_point(aes(x = longitude, y = latitude,color=river), data = data, alpha = .5, size = 5)+
   scale_colour_manual(values=c("Rio Guilarte" = "black", "Rio Cupeyes" = "gray36"))+xlab("longitude") + ylab("latitude")
+
+library(ggpubr)
+
+Xhelleri_1B <- ggplot(Xiphophorus2, aes(before_after, y=fishTotalLength)) +
+  geom_violin(fill="white") + geom_boxplot(fill="white", width=.2)+
+  labs(x="Timing of data collection relative to hurricanes",y="Total Fish Length (mm)")
+Xhelleri_1B
+
+Amonticola1D <- ggplot(Agonostomus2, aes(before_after, y=fishTotalLength)) +
+  geom_violin(fill="white") + geom_boxplot(fill="white", width=.2)+
+  labs(x="Timing of data collection relative to hurricanes",y="Total Fish Length (mm)")
+Amonticola1D
+
+Gaffinis1A <- ggplot(mosquito, aes(before_after, y=fishTotalLength)) +
+  geom_violin(fill="white") + geom_boxplot(fill="white", width=.2)+
+  labs(x="Timing of data collection relative to hurricanes",y="Total Fish length (mm)")
+Gaffinis1A
+
+Preticulta1C <- ggplot(PoeciliaGUIL3, aes(before_after, y=fishTotalLength)) +
+  geom_violin(fill="white") + geom_boxplot(fill="white", width=.2)+
+  labs(x="Timing of data collection relative to hurricanes",y="Total Fish Length (mm)")
+Preticulta1C
+
+ggarrange(Gaffinis1A, Xhelleri_1B, Preticulta1C, Amonticola1D, 
+          labels = c("A", "B", "C", "D"),
+          ncol = 2, nrow = 2)
+
+xiph <- ggplot(Xiphophorus2,aes(x=DATE,y=fishTotalLength))+labs(x="Year",y="Fish Length (mm)")+ geom_point()
+xiph
+dates_vline <- as.Date(c("2017-09-06", "2017-09-20"))  
+Fig2B <- xiph + geom_vline(xintercept=dates_vline, linetype="dashed")
+Fig2B
+
+agon <- ggplot(Agonostomus2,aes(x=DATE,y=fishTotalLength))+labs(x="Year",y="Fish Length (mm)")+ geom_point()
+agon
+dates_vline <- as.Date(c("2017-09-06", "2017-09-20"))  
+Fig2D <-  agon + geom_vline(xintercept=dates_vline, linetype="dashed")
+Fig2D
+
+mosq <- ggplot(mosquito,aes(x=DATE,y=fishTotalLength))+labs(x="Year",y="Fish Length (mm)")+ geom_point()
+mosq
+dates_vline <- as.Date(c("2017-09-06", "2017-09-20"))  
+Fig2A <- mosq + geom_vline(xintercept=dates_vline, linetype="dashed")
+Fig2A
+
+PoeciliaGUIL3$DATE<-as.Date(PoeciliaGUIL3$DATE)
+guppyGraph2 <- ggplot(PoeciliaGUIL3,aes(x=DATE,y=fishTotalLength))+labs(x="Year",y="Fish Length (mm)")+ geom_point()
+guppyGraph2
+dates_vline <- as.Date(c("2017-09-06", "2017-09-20"))  
+Fig2C <- guppyGraph2 + geom_vline(xintercept=dates_vline, linetype="dashed")
+Fig2C
+
+ggarrange(Fig2A, Fig2B, Fig2C, Fig2D, 
+          labels = c("A", "B", "C", "D"),
+          ncol = 2, nrow = 2)
+
+Fig3B <- TempCUPE + geom_vline(xintercept=dates_vline, linetype="dashed")
+Fig3D <- pHCUPE + geom_vline(xintercept=dates_vline, linetype="dashed")
+Fig3F <- OxyCUPE + geom_vline(xintercept=dates_vline, linetype="dashed")
+Fig3A <- TempGUIL + geom_vline(xintercept=dates_vline, linetype="dashed")
+Fig3C <- pHGUIL + geom_vline(xintercept=dates_vline, linetype="dashed")
+Fig3E <- OxyGUIL + geom_vline(xintercept=dates_vline, linetype="dashed")
+
+ggarrange(Fig3A, Fig3B, Fig3C, Fig3D, Fig3E, Fig3F, 
+          labels = c("A", "B", "C", "D", "E", "F"),
+          ncol = 2, nrow = 3)
